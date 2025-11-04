@@ -30,8 +30,10 @@ pipeline {
             steps {
                 script {
                     if (isUnix()) {
+                        sh 'docker-compose down'
                         sh 'docker-compose up -d'
                     } else {
+                        bat 'docker-compose down'
                         bat 'docker-compose up -d'
                     }
                 }
