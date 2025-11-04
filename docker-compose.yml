@@ -1,0 +1,46 @@
+version: '3.9'
+
+services:
+  database:
+    container_name: sgu-database
+    image: mysql:8
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: sgudb
+      MYSQL_USER: root
+      MYSQL_PASSWORD: root
+    ports:
+      - "3307:3306"
+    volumes:
+      - sgu-volume:/var/lib/mysql
+    networks:
+      - sgu-net
+
+  backend:
+    container_name: sgu-backend
+    build: ./backend
+    image: server:1.0-sgu
+    ports:
+      - "8081:8080"
+    depends_on:
+      - database
+    networks:
+      - sgu-net
+
+  frontend:
+    container_name: sgu-frontend
+    build: ./frontend
+    image: client:1.0-sgu
+    ports:
+      - "3000:80"
+    depends_on:
+      - backend
+    networks:
+      - sgu-net
+
+networks:
+  sgu-net:
+
+volumes:
+  sgu-volume:
+
