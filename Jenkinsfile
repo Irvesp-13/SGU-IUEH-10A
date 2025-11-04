@@ -30,10 +30,11 @@ pipeline {
             steps {
                 script {
                     if (isUnix()) {
-                        sh 'docker-compose down'
+                        sh 'docker-compose down --remove-orphans'
                         sh 'docker-compose up -d'
                     } else {
-                        bat 'docker-compose down'
+                        bat 'docker-compose down --remove-orphans'
+                        bat 'docker rm -f sgu-database sgu-backend sgu-frontend || exit 0'
                         bat 'docker-compose up -d'
                     }
                 }
